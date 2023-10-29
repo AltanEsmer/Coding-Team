@@ -1,11 +1,11 @@
 using System;
-namespace Trial
+namespace Git
 {
-    public class Program
+    class Program
     {
         static void Main()
         {
-            
+            System.Console.WriteLine("Hello GitHub");
         }
     }
 }
