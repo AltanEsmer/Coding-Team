@@ -5,6 +5,7 @@ import { collection, addDoc, query, where, getDocs, deleteDoc, doc, updateDoc } 
 export default function TodoList({ user }) {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user) fetchTodos();
@@ -16,11 +17,22 @@ export default function TodoList({ user }) {
     setTodos(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   };
 
-  const addTodo = async () => {
-    if (!newTodo) return;
-    await addDoc(collection(db, "todos"), { text: newTodo, completed: false, userId: user.uid });
-    setNewTodo("");
-    fetchTodos();
+  const addTodo = async (e) => {
+    e.preventDefault();
+    if (!newTodo.trim()) return;
+    
+    try {
+      await addDoc(collection(db, "todos"), {
+        text: newTodo,
+        completed: false,
+        userId: user.uid,
+        createdAt: new Date()
+      });
+      setNewTodo("");
+      fetchTodos();
+    } catch (error) {
+      console.error("Error adding todo:", error);
+    }
   };
 
   const toggleComplete = async (id, completed) => {
@@ -33,31 +45,63 @@ export default function TodoList({ user }) {
     fetchTodos();
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addTodo(e);
+  };
+
+  const toggleTodo = async (id) => {
+    const todo = todos.find(t => t.id === id);
+    if (todo) {
+      await toggleComplete(id, todo.completed);
+    }
+  };
+
   return user ? (
-    <div className="max-w-md mx-auto mt-10">
-      <input
-        type="text"
-        placeholder="New task..."
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-        className="border px-2 py-1 w-full"
-      />
-      <button onClick={addTodo} className="mt-2 px-4 py-2 bg-green-500 text-white w-full">
-        Add Task
-      </button>
-      <ul className="mt-4">
-        {todos.map(todo => (
-          <li key={todo.id} className="flex justify-between p-2 border-b">
-            <span className={todo.completed ? "line-through" : ""}>{todo.text}</span>
-            <div>
-              <button onClick={() => toggleComplete(todo.id, todo.completed)} className="px-2 mx-1">
-                {todo.completed ? "Undo" : "Done"}
+    <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Add a new task..."
+          className="input-field flex-grow"
+        />
+        <button type="submit" className="btn btn-primary">
+          Add
+        </button>
+      </form>
+
+      {isLoading ? (
+        <div className="flex justify-center">
+          <div className="loading-spinner" />
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {todos.map((todo) => (
+            <div
+              key={todo.id}
+              className={`todo-item ${todo.completed ? 'completed' : ''}`}
+            >
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() => toggleTodo(todo.id)}
+                  className="custom-checkbox"
+                />
+                <span>{todo.text}</span>
+              </div>
+              <button
+                onClick={() => deleteTodo(todo.id)}
+                className="btn btn-danger"
+              >
+                Delete
               </button>
-              <button onClick={() => deleteTodo(todo.id)} className="text-red-500">X</button>
             </div>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      )}
     </div>
   ) : (
     <p className="text-center mt-10">Please log in to manage tasks.</p>
