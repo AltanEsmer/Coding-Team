@@ -15,3 +15,14 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app);
+
+/**
+ * @typedef {Object} Todo
+ * @property {string} text - The todo text
+ * @property {boolean} completed - Whether the todo is completed
+ * @property {string} userId - The user ID
+ * @property {('high'|'medium'|'low')} priority - The todo priority
+ * @property {Date} createdAt - When the todo was created
+ */
+
+export default app;

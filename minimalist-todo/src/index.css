@@ -149,3 +149,60 @@ body {
   @apply line-through text-gray-500;
 }
 
+/* Priority Colors */
+.priority-high {
+  @apply border-l-4 border-red-500;
+}
+
+.priority-medium {
+  @apply border-l-4 border-yellow-500;
+}
+
+.priority-low {
+  @apply border-l-4 border-green-500;
+}
+
+/* Voice Input Animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.recording {
+  animation: pulse 1.5s infinite;
+  @apply bg-red-500;
+}
+
+/* Priority Badge */
+.priority-badge {
+  @apply text-xs px-2 py-1 rounded-full;
+}
+
+.priority-badge-high {
+  @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+}
+
+.priority-badge-medium {
+  @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+}
+
+.priority-badge-low {
+  @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+}
+
+/* Drag and Drop Styles */
+.todo-item {
+  @apply cursor-grab active:cursor-grabbing;
+}
+
+.todo-item.dragging {
+  @apply opacity-50 scale-105 rotate-1;
+}
+
+/* Handle icon */
+.drag-handle {
+  @apply text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 
+         cursor-move select-none;
+}
+
