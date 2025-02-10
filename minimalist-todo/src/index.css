@@ -191,8 +191,25 @@ body {
   @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
 }
 
+/* Priority Badge */
+.priority-badge {
+  @apply text-xs px-2 py-1 rounded-full;
+}
+
+.priority-badge-high {
+  @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+}
+
+.priority-badge-medium {
+  @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+}
+
+.priority-badge-low {
+  @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+}
+
 /* Drag and Drop Styles */
-.todo-item {
+/* .todo-item {
   @apply cursor-grab active:cursor-grabbing;
 }
 
@@ -200,9 +217,8 @@ body {
   @apply opacity-50 scale-105 rotate-1;
 }
 
-/* Handle icon */
 .drag-handle {
   @apply text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 
          cursor-move select-none;
-}
+} */
 
